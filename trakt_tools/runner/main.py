@@ -1,22 +1,14 @@
 from . import commands
+from trakt_tools.core.authentication import configure
 
-from trakt import Trakt
 import click
 import logging
 import os
 import sys
 
 
-# Configure trakt.py
-# TODO use the trakt-tools api key
-Trakt.configuration.defaults.app(
-    id='10248'
-)
-
-Trakt.configuration.defaults.client(
-    id='023e5e78690b1d8014b40ecff062f02f9fbe187649920b06a5e56939b4514ddf',
-    secret='30bb522275beb2710334cf4db18ca157b5fc85d1e17c913229bf853a9390a1ea'
-)
+# Load saved credentials (or env vars) and configure the Trakt client
+configure()
 
 
 # Initialize command-line parser

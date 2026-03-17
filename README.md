@@ -7,10 +7,8 @@ Command-line tools for Trakt.tv.
 
 ## Install
 
-Download the latest release from [GitHub Releases](https://github.com/SteffenGivard/trakt-tools/releases/latest), then install with:
-
 ```
-pip install trakt_tools-*.whl
+pip install git+https://github.com/SteffenGivard/trakt-tools.git
 ```
 
 ## Usage

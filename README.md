@@ -1,9 +1,5 @@
 # trakt-tools
 
-[![Test](https://github.com/fuzeman/trakt-tools/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/fuzeman/trakt-tools/actions/workflows/test.yml)
-[![GitHub Release](https://img.shields.io/github/release/fuzeman/trakt-tools.svg?maxAge=2592000&style=flat-square)](https://github.com/fuzeman/trakt-tools/releases/latest)
-[![PyPI](https://img.shields.io/pypi/v/trakt-tools.svg?maxAge=2592000&style=flat-square)](https://pypi.python.org/pypi/trakt-tools)
-
 Command-line tools for Trakt.tv.
 
 > [!WARNING]

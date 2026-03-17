@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.3.0 (2026-03-17)
+
+**Breaking**
+- Dropped Python 2 support — Python 3.9+ required
+- Removed `six` dependency
+
+**Added**
+- Guided first-run setup: prompts for Trakt API credentials and walks through device auth
+- Credentials and access token saved to `~/.config/trakt-tools/auth.json` — no need to re-authenticate on each run
+- Automatic token refresh when access token is near expiry (within 7 days); falls back to full re-auth if refresh fails
+- Rich terminal output: coloured messages, progress bars with ETA on long-running fetches
+- `--delta-max` now accepts human-readable durations (`30s`, `10m`, `2h`, `1d`, `1w`, `1mo`, `1y`) in addition to plain seconds
+- `-y/--yes` flag on `history:duplicates:merge` and `history:duplicates:scan` for non-interactive/cron use
+- Full restore support in `profile:backup:apply`: collection, ratings, and watchlist (playback progress cannot be restored — no Trakt API endpoint exists)
+- Duplicate display now shows ✓ (keep) / ✗ (remove) / · (untouched) markers with time-apart on removed records
+
+**Fixed**
+- `ex.message` AttributeError on network errors (Python 3 incompatibility)
+- `requests` added as an explicit dependency
+
+**Changed**
+- `--delta-max` default changed from `600` (seconds) to `10m`
+- Removed redundant "logged in as / would you like to continue" prompts
+- Updated package metadata and dropped stale example output from README
+
 ## 0.2.4 (2026-03-15)
 
 **Changed**

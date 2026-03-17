@@ -1,3 +1,4 @@
+from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
 from trakt_tools.models import Profile
 from trakt_tools.tasks.base import Task
@@ -37,7 +38,7 @@ class CreateApplyTask(Task):
         log.debug('process()')
 
         if not profile:
-            print('Requesting profile...')
+            console.print('[dim]Requesting profile...[/dim]')
             profile = Profile.fetch(
                 self.per_page,
                 self.rate_limit
@@ -46,13 +47,13 @@ class CreateApplyTask(Task):
         if not profile:
             raise Exception('Unable to fetch profile')
 
-        print('Logged in as %r' % profile.username)
-        print()
+        console.print('Logged in as [bold green]%s[/bold green]' % profile.username)
+        console.print('')
 
         if not boolean_input('Would you like to continue?', default=True):
             exit(0)
 
-        print()
+        console.print('')
 
         # Apply backup
         return self.apply_backup()
@@ -62,7 +63,7 @@ class CreateApplyTask(Task):
             h = handler()
 
             if not h.run(self.backup_zip):
-                print('Unable to apply backup, handler %r failed' % h)
+                console.print('[red]Unable to apply backup, handler %r failed[/red]' % h)
                 return False
 
-            print()
+            console.print('')

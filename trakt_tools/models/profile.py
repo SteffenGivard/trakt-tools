@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
 
 from requests import RequestException
@@ -160,6 +161,12 @@ class Profile(object):
                 retry_count += 1
                 continue
 
+            if response.status_code == 429:
+                wait = int(response.headers.get('Retry-After', 60))
+                console.print('[yellow]Rate limited by Trakt API — waiting %ds (Retry-After)[/yellow]' % wait)
+                time.sleep(wait)
+                continue
+
             if response.status_code != 200:
                 self._retry_request(
                     retry_count,
@@ -228,10 +235,7 @@ class Profile(object):
     def _retry_request(retry_count, prompt=True, message='Request failed', reason=None):
         # Ask if a retry should be attempted
         if prompt:
-            print('%s (%s)' % (
-                message,
-                reason
-            ))
+            console.print('[red]%s (%s)[/red]' % (message, reason))
 
             if boolean_input('Request has failed %d times, retry request?' % retry_count, default=True):
                 # Retry request again
@@ -251,10 +255,7 @@ class Profile(object):
             ))
 
         # Retry request
-        print('%s, retrying in 5 seconds... (%s)' % (
-            message,
-            reason
-        ))
+        console.print('[yellow]%s, retrying in 5 seconds... (%s)[/yellow]' % (message, reason))
         time.sleep(5)
 
     # endregion

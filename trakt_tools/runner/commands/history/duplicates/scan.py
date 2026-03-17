@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 from trakt_tools.core.authentication import authenticate
+from trakt_tools.core.console import console
 from trakt_tools.tasks import ScanHistoryDuplicatesTask
 
 import click
@@ -31,10 +32,9 @@ def history_duplicates_scan(ctx, token, delta_max, per_page):
         success, token = authenticate()
 
         if not success:
-            print('Authentication failed')
+            console.print('[red]Authentication failed[/red]')
             exit(1)
 
-        print()
 
     # Run task
     success = ScanHistoryDuplicatesTask(

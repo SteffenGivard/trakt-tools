@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 from trakt_tools.core.authentication import authenticate
+from trakt_tools.core.console import console
 from trakt_tools.tasks import CreateBackupTask
 
 import click
@@ -36,10 +37,9 @@ def profile_backup_create(ctx, assume_yes, token, backup_dir, per_page):
         success, token = authenticate()
 
         if not success:
-            print('Authentication failed')
+            console.print('[red]Authentication failed[/red]')
             exit(1)
 
-        print()
 
     # Set default backup directory
     if not backup_dir:

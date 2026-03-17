@@ -5,6 +5,7 @@ from zipfile import ZipFile
 import six
 from trakt import Trakt
 
+from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
 
 log = logging.getLogger(__name__)
@@ -12,7 +13,7 @@ log = logging.getLogger(__name__)
 
 class HistoryHandler(object):
     def run(self, backup_zip, batch_size=200):
-        print('Applying history')
+        console.print('[bold]Applying history[/bold]')
 
         episodes = []
         movies = []
@@ -34,16 +35,16 @@ class HistoryHandler(object):
                 episodes.append({'watched_at': watched_at, 'ids': ids})
 
             else:
-                print('Unable to apply {}: {}'.format(item_type, item))
+                console.print('[yellow]Unable to apply {}: {}[/yellow]'.format(item_type, item))
 
         # Add the episodes in batches
-        print('Adding {} Episodes in batches of {}:'.format(len(episodes), batch_size))
+        console.print('Adding [cyan]{}[/cyan] episode(s) in batches of {}:'.format(len(episodes), batch_size))
         for x in six.moves.xrange(0, len(episodes), batch_size):
             if not self._add_episodes(episodes[x:x + batch_size]):
                 return False
 
         # Add the movies in batches
-        print('Adding {} Movies in batches of {}:'.format(len(movies), batch_size))
+        console.print('Adding [cyan]{}[/cyan] movie(s) in batches of {}:'.format(len(movies), batch_size))
         for x in six.moves.xrange(0, len(movies), batch_size):
             if not self._add_movies(movies[x:x + batch_size]):
                 return False
@@ -53,16 +54,16 @@ class HistoryHandler(object):
     def _add_episodes(self, episodes):
         response = Trakt['sync/history'].add({'episodes': episodes})
 
-        print(' - Added {} Episodes'.format(response.get("added").get("episodes")))
+        console.print('  [green]Added {}[/green] episode(s)'.format(response.get("added").get("episodes")))
 
         failed_episodes = response.get('not_found').get('episodes')
         if len(failed_episodes) > 0:
-            print()
-            print('Unable to apply Episodes:')
+            console.print('')
+            console.print('[red]Unable to apply episode(s):[/red]')
             for episode in failed_episodes:
-                print(' - ', episode)
+                console.print('  [dim]- %s[/dim]' % episode)
 
-            print()
+            console.print('')
             if not boolean_input('Would you like to continue anyway?', default=False):
                 return False
 
@@ -71,16 +72,16 @@ class HistoryHandler(object):
     def _add_movies(self, movies):
         response = Trakt['sync/history'].add({'movies': movies})
 
-        print(' - Added {} Movies'.format(response.get("added").get("movies")))
+        console.print('  [green]Added {}[/green] movie(s)'.format(response.get("added").get("movies")))
 
         failed_movies = response.get('not_found').get('movies')
         if len(failed_movies) > 0:
-            print()
-            print('Unable to apply Movies:')
+            console.print('')
+            console.print('[red]Unable to apply movie(s):[/red]')
             for movie in failed_movies:
-                print(' - ', movie)
+                console.print('  [dim]- %s[/dim]' % movie)
 
-            print()
+            console.print('')
             if not boolean_input('Would you like to continue anyway?', default=False):
                 return False
 

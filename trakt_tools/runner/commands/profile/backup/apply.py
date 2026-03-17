@@ -1,4 +1,5 @@
 from trakt_tools.core.authentication import authenticate
+from trakt_tools.core.console import console
 from trakt_tools.tasks import CreateApplyTask
 
 import click
@@ -28,14 +29,13 @@ def profile_backup_apply(backup_zip, token):
         success, token = authenticate()
 
         if not success:
-            print('Authentication failed')
+            console.print('[red]Authentication failed[/red]')
             exit(1)
 
-        print()
 
     # Ensure backup directory exists
     if not os.path.exists(backup_zip):
-        print('No such backup zip: "{}"'.format(backup_zip))
+        console.print('[red]No such backup zip: "{}"][/red]'.format(backup_zip))
         exit(1)
 
     # Run task

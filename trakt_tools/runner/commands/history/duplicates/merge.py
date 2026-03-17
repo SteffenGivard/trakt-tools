@@ -2,6 +2,7 @@ from __future__ import print_function
 
 from trakt_tools.core.authentication import authenticate
 from trakt_tools.core.console import console
+from trakt_tools.core.duration import parse_duration
 from trakt_tools.tasks import MergeHistoryDuplicatesTask
 
 import click
@@ -21,8 +22,8 @@ import os
 )
 @click.option(
     '--delta-max',
-    default=10 * 60,
-    help='Maximum delta between history records to consider as duplicate. (in seconds) (default: 600)'
+    default='10m',
+    help='Maximum delta between history records to consider as duplicate. (default: 10m)'
 )
 @click.option(
     '--per-page',
@@ -50,6 +51,10 @@ def history_duplicates_merge(ctx, token, backup_dir, delta_max, per_page, backup
             console.print('[red]Authentication failed[/red]')
             exit(1)
 
+    delta_max_seconds = parse_duration(delta_max)
+    if delta_max_seconds is None:
+        console.print('[red]Invalid --delta-max value %r. Use a duration like 30s, 10m, 2h, 1d.[/red]' % delta_max)
+        exit(1)
 
     # Set default backup directory
     if not backup_dir:
@@ -62,7 +67,7 @@ def history_duplicates_merge(ctx, token, backup_dir, delta_max, per_page, backup
     # Run task
     success = MergeHistoryDuplicatesTask(
         backup_dir=backup_dir,
-        delta_max=delta_max,
+        delta_max=delta_max_seconds,
         per_page=per_page,
 
         debug=ctx.parent.debug,

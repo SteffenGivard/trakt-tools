@@ -56,7 +56,7 @@ Usage: trakt_tools history:duplicates:merge [OPTIONS]
 Options:
   --token TEXT            Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)
   --backup-dir TEXT       Directory that backups should be stored in. (default: "./backups")
-  --delta-max INTEGER     Maximum delta between history records to consider as duplicate. (in seconds) (default: 600)
+  --delta-max TEXT        Maximum delta between history records to consider as duplicate. (default: 10m)
   --per-page INTEGER      Request page size. (default: 1000)
   --backup / --no-backup  Backup profile before applying any changes. (default: prompt)
   --review / --no-review  Review each action before applying them. (default: prompt)
@@ -72,7 +72,7 @@ Usage: trakt_tools history:duplicates:scan [OPTIONS]
 
 Options:
   --token TEXT         Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)
-  --delta-max INTEGER  Maximum delta between history records to consider as duplicate. (in seconds) (default: 600)
+  --delta-max TEXT     Maximum delta between history records to consider as duplicate. (default: 10m)
   --per-page INTEGER   Request page size. (default: 1000)
   --help               Show this message and exit.
 ```

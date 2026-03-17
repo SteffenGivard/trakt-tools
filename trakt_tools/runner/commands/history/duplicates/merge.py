@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.authentication import authenticate
 from trakt_tools.core.console import console
@@ -10,6 +9,11 @@ import os
 
 
 @click.command('history:duplicates:merge')
+@click.option(
+    '-y', '--yes', 'assume_yes',
+    is_flag=True,
+    help='Automatic yes to confirmation prompts.'
+)
 @click.option(
     '--token',
     default=os.environ.get('TRAKT_TOKEN') or None,
@@ -41,7 +45,7 @@ import os
     help='Review each action before applying them. (default: prompt)'
 )
 @click.pass_context
-def history_duplicates_merge(ctx, token, backup_dir, delta_max, per_page, backup, review):
+def history_duplicates_merge(ctx, assume_yes, token, backup_dir, delta_max, per_page, backup, review):
     """Merge duplicate history records"""
 
     if not token:
@@ -70,6 +74,7 @@ def history_duplicates_merge(ctx, token, backup_dir, delta_max, per_page, backup
         delta_max=delta_max_seconds,
         per_page=per_page,
 
+        assume_yes=assume_yes,
         debug=ctx.parent.debug,
         rate_limit=ctx.parent.rate_limit
     ).run(

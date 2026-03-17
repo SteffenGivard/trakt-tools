@@ -2,7 +2,6 @@ import json
 import logging
 from zipfile import ZipFile
 
-import six
 from trakt import Trakt
 
 from trakt_tools.core.console import console
@@ -25,13 +24,13 @@ class CollectionHandler(object):
         shows = [self._flatten_show(s) for s in raw_shows]
 
         console.print('Adding [cyan]{}[/cyan] movie(s) in batches of {}:'.format(len(movies), batch_size))
-        for x in six.moves.xrange(0, max(len(movies), 1), batch_size):
+        for x in range(0, max(len(movies), 1), batch_size):
             batch = movies[x:x + batch_size]
             if batch and not self._add({'movies': batch}, 'movies'):
                 return False
 
         console.print('Adding [cyan]{}[/cyan] show(s) in batches of {}:'.format(len(shows), batch_size))
-        for x in six.moves.xrange(0, max(len(shows), 1), batch_size):
+        for x in range(0, max(len(shows), 1), batch_size):
             batch = shows[x:x + batch_size]
             if batch and not self._add({'shows': batch}, 'shows'):
                 return False

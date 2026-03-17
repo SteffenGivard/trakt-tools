@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
 from trakt import Trakt
@@ -6,7 +5,6 @@ from trakt import Trakt
 import json
 import os
 import requests
-import six
 import time
 
 
@@ -117,8 +115,8 @@ def authenticate():
         console.print('  4. Save the application and copy the Client ID and Client Secret')
         console.print('')
 
-        client_id = six.moves.input('Client ID: ').strip()
-        client_secret = six.moves.input('Client Secret: ').strip()
+        client_id = input('Client ID: ').strip()
+        client_secret = input('Client Secret: ').strip()
 
         if not client_id or not client_secret:
             console.print('[red]ERROR: Client ID and Client Secret are required.[/red]')
@@ -142,7 +140,7 @@ def authenticate():
     console.print('  Navigate to: [bold cyan]%s[/bold cyan]' % result.get('verification_url', 'https://trakt.tv/activate'))
     console.print('  Enter code:  [bold cyan]%s[/bold cyan]' % result['user_code'])
     console.print('')
-    six.moves.input('Press ENTER once you have authorized the application...')
+    input('Press ENTER once you have authorized the application...')
 
     # Exchange device code for access token
     authorization = Trakt['oauth/device'].token(result['device_code'])

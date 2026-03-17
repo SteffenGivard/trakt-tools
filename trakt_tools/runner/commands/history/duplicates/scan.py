@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.authentication import authenticate
 from trakt_tools.core.console import console
@@ -10,6 +9,11 @@ import os
 
 
 @click.command('history:duplicates:scan')
+@click.option(
+    '-y', '--yes', 'assume_yes',
+    is_flag=True,
+    help='Automatic yes to confirmation prompts.'
+)
 @click.option(
     '--token',
     default=os.environ.get('TRAKT_TOKEN') or None,
@@ -26,7 +30,7 @@ import os
     help='Request page size. (default: 1000)'
 )
 @click.pass_context
-def history_duplicates_scan(ctx, token, delta_max, per_page):
+def history_duplicates_scan(ctx, assume_yes, token, delta_max, per_page):
     """Scan for duplicate history records"""
 
     if not token:
@@ -46,6 +50,7 @@ def history_duplicates_scan(ctx, token, delta_max, per_page):
         delta_max=delta_max_seconds,
         per_page=per_page,
 
+        assume_yes=assume_yes,
         debug=ctx.parent.debug,
         rate_limit=ctx.parent.rate_limit
     ).run(

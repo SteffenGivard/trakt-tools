@@ -1,9 +1,7 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
 from trakt_tools.core.helpers import total_seconds
 
-import six
 
 
 def _format_delta(seconds):
@@ -75,7 +73,7 @@ class Formatter(object):
     def episodes(cls, show, timezone=None):
         ids = []
 
-        for x, episode in enumerate(six.itervalues(show.children)):
+        for x, episode in enumerate(show.children).values():
             console.print('  [cyan]S%02dE%02d[/cyan]  [cyan]%d[/cyan] plays → [green]%d[/green] plays' % (
                 episode.season,
                 episode.number,

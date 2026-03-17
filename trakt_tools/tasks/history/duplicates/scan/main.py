@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
@@ -12,13 +11,12 @@ from trakt import Trakt
 from trakt.mapper import SyncMapper
 from trakt.objects import Episode
 import logging
-import six
 
 log = logging.getLogger(__name__)
 
 
 class ScanHistoryDuplicatesTask(Task):
-    def __init__(self, delta_max, per_page=1000, debug=False, rate_limit=20):
+    def __init__(self, delta_max, per_page=1000, assume_yes=False, debug=False, rate_limit=20):
         super(ScanHistoryDuplicatesTask, self).__init__(
             debug=debug,
             rate_limit=rate_limit
@@ -26,6 +24,7 @@ class ScanHistoryDuplicatesTask(Task):
 
         self.delta_max = delta_max
         self.per_page = per_page
+        self.assume_yes = assume_yes
 
         self.shows = {}
         self.movies = {}
@@ -53,14 +52,6 @@ class ScanHistoryDuplicatesTask(Task):
         if not profile:
             console.print('[red]Unable to fetch profile[/red]')
             exit(1)
-
-        console.print('Logged in as [bold green]%s[/bold green]' % profile.username)
-        console.print('')
-
-        if not boolean_input('Would you like to continue?', default=True):
-            exit(0)
-
-        console.print('')
 
         if not self.scan(profile):
             exit(1)
@@ -179,7 +170,7 @@ class ScanHistoryDuplicatesTask(Task):
     def _get_duplicated_items(store):
         result = {}
 
-        for key, entry in six.iteritems(store):
+        for key, entry in store.items():
             if entry.duplicated:
                 result[key] = entry
 

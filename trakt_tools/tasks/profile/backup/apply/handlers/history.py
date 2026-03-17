@@ -2,7 +2,6 @@ import json
 import logging
 from zipfile import ZipFile
 
-import six
 from trakt import Trakt
 
 from trakt_tools.core.console import console
@@ -39,13 +38,13 @@ class HistoryHandler(object):
 
         # Add the episodes in batches
         console.print('Adding [cyan]{}[/cyan] episode(s) in batches of {}:'.format(len(episodes), batch_size))
-        for x in six.moves.xrange(0, len(episodes), batch_size):
+        for x in range(0, len(episodes), batch_size):
             if not self._add_episodes(episodes[x:x + batch_size]):
                 return False
 
         # Add the movies in batches
         console.print('Adding [cyan]{}[/cyan] movie(s) in batches of {}:'.format(len(movies), batch_size))
-        for x in six.moves.xrange(0, len(movies), batch_size):
+        for x in range(0, len(movies), batch_size):
             if not self._add_movies(movies[x:x + batch_size]):
                 return False
 

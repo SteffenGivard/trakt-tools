@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
@@ -156,7 +155,7 @@ class Profile(object):
                     retry_count,
                     prompt=retry_count >= 3,
                     message='Unable to fetch page #%d' % page,
-                    reason='exception: %s' % ex.message
+                    reason='exception: %s' % ex
                 )
                 retry_count += 1
                 continue

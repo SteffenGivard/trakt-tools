@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
@@ -8,7 +7,6 @@ from requests import RequestException
 from rich.rule import Rule
 from trakt import Trakt, ClientError, ServerError
 import logging
-import six
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +37,7 @@ class Executor(object):
                 continue
 
             # Remove history records
-            for x in six.moves.xrange(0, len(ids), self.batch_size):
+            for x in range(0, len(ids), self.batch_size):
                 self._remove_records(ids[x:x + self.batch_size])
 
             console.print('')
@@ -66,7 +64,7 @@ class Executor(object):
                 continue
 
             # Remove history records
-            for x in six.moves.xrange(0, len(ids), self.batch_size):
+            for x in range(0, len(ids), self.batch_size):
                 self._remove_records(ids[x:x + self.batch_size])
 
             console.print('')
@@ -92,8 +90,8 @@ class Executor(object):
 
                 if isinstance(ex, (ClientError, ServerError)):
                     _, message = ex.error
-                elif hasattr(ex, 'message'):
-                    message = ex.message
+                else:
+                    message = str(ex)
 
                 # Prompt for request retry
                 console.print('[red]Unable to remove %d history record(s): %s[/red]' % (len(ids), message))

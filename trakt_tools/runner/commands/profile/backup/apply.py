@@ -33,11 +33,6 @@ def profile_backup_apply(backup_zip, token):
             exit(1)
 
 
-    # Ensure backup directory exists
-    if not os.path.exists(backup_zip):
-        console.print('[red]No such backup zip: "{}"][/red]'.format(backup_zip))
-        exit(1)
-
     # Run task
     success = CreateApplyTask(backup_zip).run(token=token)
 

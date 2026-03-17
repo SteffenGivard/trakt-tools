@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
 

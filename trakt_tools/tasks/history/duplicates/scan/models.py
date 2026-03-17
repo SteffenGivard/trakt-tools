@@ -1,7 +1,6 @@
 from trakt_tools.core.helpers import total_seconds
 
 from trakt.objects import Show, Episode, Movie
-import six
 
 
 class Entry(object):
@@ -37,7 +36,7 @@ class Entry(object):
         return len(self.records) > len(self.groups)
 
     def add(self, current, delta_max):
-        for records in six.itervalues(self.groups):
+        for records in self.groups.values():
             matched = False
 
             for record in records:

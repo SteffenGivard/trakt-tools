@@ -105,7 +105,6 @@ Usage: trakt_tools profile:backup:create [OPTIONS]
   Create backup of a Trakt.tv profile.
 
 Options:
-  -y, --yes           Automatic yes to confirmation prompts.
   --token TEXT        Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)
   --backup-dir TEXT   Directory that backups should be stored in. (default: "./backups")
   --per-page INTEGER  Request page size. (default: 1000)

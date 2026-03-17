@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.authentication import authenticate
 from trakt_tools.core.console import console
@@ -9,11 +8,6 @@ import os
 
 
 @click.command('profile:backup:create')
-@click.option(
-    '-y', '--yes', 'assume_yes',
-    is_flag=True,
-    help='Automatic yes to confirmation prompts.'
-)
 @click.option(
     '--token',
     default=os.environ.get('TRAKT_TOKEN') or None,
@@ -30,7 +24,7 @@ import os
     help='Request page size. (default: 1000)'
 )
 @click.pass_context
-def profile_backup_create(ctx, assume_yes, token, backup_dir, per_page):
+def profile_backup_create(ctx, token, backup_dir, per_page):
     """Create backup of a Trakt.tv profile."""
 
     if not token:
@@ -54,7 +48,6 @@ def profile_backup_create(ctx, assume_yes, token, backup_dir, per_page):
         backup_dir=backup_dir,
         per_page=per_page,
 
-        assume_yes=assume_yes,
         debug=ctx.parent.debug,
         rate_limit=ctx.parent.rate_limit
     ).run(

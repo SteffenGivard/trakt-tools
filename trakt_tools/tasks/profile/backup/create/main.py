@@ -1,7 +1,5 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
-from trakt_tools.core.input import boolean_input
 from trakt_tools.models import Backup, Profile
 from trakt_tools.tasks.base import Task
 from .handlers import CollectionHandler, HistoryHandler, PlaybackHandler, RatingsHandler, WatchlistHandler
@@ -24,13 +22,12 @@ class CreateBackupTask(Task):
         WatchlistHandler
     ]
 
-    def __init__(self, backup_dir, per_page=1000, debug=False, rate_limit=20, assume_yes=False):
+    def __init__(self, backup_dir, per_page=1000, debug=False, rate_limit=20):
         super(CreateBackupTask, self).__init__(
             debug=debug,
             rate_limit=rate_limit
         )
 
-        self.assume_yes = assume_yes
         self.backup_dir = backup_dir
         self.per_page = per_page
 
@@ -53,14 +50,6 @@ class CreateBackupTask(Task):
 
         if not profile:
             raise Exception('Unable to fetch profile')
-
-        console.print('Logged in as [bold green]%s[/bold green]' % profile.username)
-        console.print('')
-
-        if not self.assume_yes and not boolean_input('Would you like to continue?', default=True):
-            exit(0)
-
-        console.print('')
 
         # Create backup
         return self.create_backup(profile)

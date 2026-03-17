@@ -2,7 +2,6 @@ import json
 import logging
 from zipfile import ZipFile
 
-import six
 from trakt import Trakt
 
 from trakt_tools.core.console import console
@@ -49,7 +48,7 @@ class RatingsHandler(object):
 
         for label, items in buckets:
             console.print('Adding [cyan]{}[/cyan] {}:'.format(len(items), label))
-            for x in six.moves.xrange(0, max(len(items), 1), batch_size):
+            for x in range(0, max(len(items), 1), batch_size):
                 batch = items[x:x + batch_size]
                 if batch and not self._add({label: batch}, label):
                     return False

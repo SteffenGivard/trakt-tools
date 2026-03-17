@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
@@ -15,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class MergeHistoryDuplicatesTask(Task):
-    def __init__(self, backup_dir, delta_max, per_page=1000, debug=False, rate_limit=20):
+    def __init__(self, backup_dir, delta_max, per_page=1000, assume_yes=False, debug=False, rate_limit=20):
         super(MergeHistoryDuplicatesTask, self).__init__(
             debug=debug,
             rate_limit=rate_limit
@@ -24,6 +23,7 @@ class MergeHistoryDuplicatesTask(Task):
         self.backup_dir = backup_dir
         self.delta_max = delta_max
         self.per_page = per_page
+        self.assume_yes = assume_yes
 
         self.scanner = None
 
@@ -51,17 +51,9 @@ class MergeHistoryDuplicatesTask(Task):
             console.print('[red]Unable to fetch profile[/red]')
             exit(1)
 
-        console.print('Logged in as [bold green]%s[/bold green]' % profile.username)
-        console.print('')
-
-        if not boolean_input('Would you like to continue?', default=True):
-            exit(0)
-
-        console.print('')
-
         # Create backup
         if backup is None:
-            backup = boolean_input('Create profile backup?', default=True)
+            backup = self.assume_yes or boolean_input('Create profile backup?', default=True)
             console.print('')
 
         if backup and not self._create_backup(profile):
@@ -74,6 +66,7 @@ class MergeHistoryDuplicatesTask(Task):
         self.scanner = ScanHistoryDuplicatesTask(
             delta_max=self.delta_max,
 
+            assume_yes=self.assume_yes,
             debug=self.debug,
             rate_limit=self.rate_limit
         )
@@ -104,7 +97,7 @@ class MergeHistoryDuplicatesTask(Task):
 
     def execute(self, profile, review=None):
         if review is None:
-            review = boolean_input('Review every action?', default=True)
+            review = not self.assume_yes and boolean_input('Review every action?', default=True)
             console.print('')
 
         executor = Executor(review)

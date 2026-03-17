@@ -185,11 +185,11 @@ class Profile(object):
             # Increment received count
             received_count += len(items)
 
-            # Update page count
-            page_count = int(response.headers['X-Pagination-Page-Count'])
+            # Update page count (some endpoints omit headers when result fits in one page)
+            page_count = int(response.headers.get('X-Pagination-Page-Count', 1))
 
             # Update item count
-            item_count = int(response.headers['X-Pagination-Item-Count'])
+            item_count = int(response.headers.get('X-Pagination-Item-Count', received_count))
 
             # Yield page details
             yield page, page_count, items

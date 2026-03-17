@@ -10,15 +10,10 @@ class RatingsHandler(object):
     def run(self, backup, profile):
         console.print('[bold]Ratings[/bold]')
 
-        # Request ratings
-        response = profile.get('/sync/ratings')
+        items = []
 
-        if response.status_code != 200:
-            console.print('  [red]Invalid response returned[/red]')
-            return False
-
-        # Retrieve items
-        items = response.json()
+        for i, count, page in profile.get_pages('/sync/ratings'):
+            items.extend(page)
 
         console.print('  Received [cyan]%d[/cyan] item(s)' % len(items))
         console.print('  [dim]Writing to "ratings.json"...[/dim]')

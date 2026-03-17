@@ -18,15 +18,10 @@ class CollectionHandler(object):
         )
 
     def run_media(self, backup, profile, media):
-        # Request ratings
-        response = profile.get('/sync/collection/%s?extended=metadata' % media)
+        items = []
 
-        if response.status_code != 200:
-            console.print('  [red]Invalid response returned[/red]')
-            return False
-
-        # Retrieve items
-        items = response.json()
+        for i, count, page in profile.get_pages('/sync/collection/%s' % media, query={'extended': 'metadata'}):
+            items.extend(page)
 
         if media == 'movies':
             console.print('  Received [cyan]%d[/cyan] movie(s)' % len(items))

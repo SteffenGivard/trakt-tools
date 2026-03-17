@@ -1,5 +1,7 @@
 from __future__ import print_function
 
+from trakt_tools.core.console import console
+
 import logging
 
 log = logging.getLogger(__name__)
@@ -7,22 +9,20 @@ log = logging.getLogger(__name__)
 
 class WatchlistHandler(object):
     def run(self, backup, profile):
-        print('Watchlist')
+        console.print('[bold]Watchlist[/bold]')
 
         # Request ratings
         response = profile.get('/sync/watchlist')
 
         if response.status_code != 200:
-            print('Invalid response returned')
+            console.print('  [red]Invalid response returned[/red]')
             return False
 
         # Retrieve items
         items = response.json()
 
-        print(' - Received %d item(s)' % len(items))
-
-        # Write watchlist to disk
-        print(' - Writing to "watchlist.json"...')
+        console.print('  Received [cyan]%d[/cyan] item(s)' % len(items))
+        console.print('  [dim]Writing to "watchlist.json"...[/dim]')
 
         try:
             return backup.write('watchlist.json', items)

@@ -1,11 +1,13 @@
 from __future__ import print_function
 
+from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
 from trakt_tools.models import Profile
 from trakt_tools.tasks.base import Task
 from ..core.formatter import Formatter
 from .models import Entry, Record
 
+from rich.progress import Progress, BarColumn, TaskProgressColumn, TimeRemainingColumn, TextColumn
 from trakt import Trakt
 from trakt.mapper import SyncMapper
 from trakt.objects import Episode
@@ -42,31 +44,31 @@ class ScanHistoryDuplicatesTask(Task):
         log.debug('process()')
 
         if not profile:
-            print('Requesting profile...')
+            console.print('[dim]Requesting profile...[/dim]')
             profile = Profile.fetch(
                 self.per_page,
                 self.rate_limit
             )
 
         if not profile:
-            print('Unable to fetch profile')
+            console.print('[red]Unable to fetch profile[/red]')
             exit(1)
 
-        print('Logged in as %r' % profile.username)
-        print()
+        console.print('Logged in as [bold green]%s[/bold green]' % profile.username)
+        console.print('')
 
         if not boolean_input('Would you like to continue?', default=True):
             exit(0)
 
-        print()
+        console.print('')
 
         if not self.scan(profile):
             exit(1)
 
-        print()
+        console.print('')
 
         if not self.shows and not self.movies:
-            print('Unable to find any duplicates')
+            console.print('[yellow]No duplicates found.[/yellow]')
             exit(0)
 
         timezone = profile.timezone
@@ -77,27 +79,37 @@ class ScanHistoryDuplicatesTask(Task):
                 continue
 
             Formatter.show(show, timezone=timezone)
-            print()
+            console.print('')
 
         # Display duplicate movies
         for _, movie in self.movies.items():
             Formatter.movie(movie, timezone=timezone)
-            print()
+            console.print('')
 
         return True
 
     def scan(self, profile):
-        print('Scanning for duplicates...')
+        console.print('[bold]Scanning for duplicates...[/bold]')
 
-        # Process items
-        for i, count, page in profile.get_pages('/sync/history'):
-            print(' - Processing %d items... (page %d of %d)' % (len(page), i, count))
+        with Progress(
+            TextColumn('[progress.description]{task.description}'),
+            BarColumn(),
+            TaskProgressColumn(),
+            TimeRemainingColumn(),
+            console=console,
+        ) as progress:
+            task = None
 
-            for item in page:
-                # Process item, stop scanning if an error is encountered
-                if not self.process_item(item):
-                    print('Unable to process item: %r' % item)
-                    return False
+            for i, count, page in profile.get_pages('/sync/history'):
+                if task is None:
+                    task = progress.add_task('  Reading history...', total=count)
+
+                for item in page:
+                    if not self.process_item(item):
+                        progress.console.print('[red]Unable to process item: %r[/red]' % item)
+                        return False
+
+                progress.update(task, completed=i)
 
         # Close scanner (find duplicates, release resources)
         self.close()

@@ -1,17 +1,20 @@
 from __future__ import print_function
 
+from trakt_tools.core.console import console
+
 import six
 
 
 class Formatter(object):
     @classmethod
     def movie(cls, movie, timezone=None):
-        title = '"%s" (%r)' % (
+        title = '[bold]"%s"[/bold] [dim](%r)[/dim]' % (
             movie.title,
             movie.year
         )
+        plain_title = '"%s" (%r)' % (movie.title, movie.year)
 
-        print('%s - %d plays -> %d plays' % (
+        console.print('%s — [cyan]%d[/cyan] plays → [green]%d[/green] plays' % (
             title,
             len(movie.records),
             len(movie.groups)
@@ -25,7 +28,7 @@ class Formatter(object):
             else:
                 timestamp = timestamp_utc
 
-            print('\t%s (%s)' % (
+            console.print('  [dim]%s[/dim] [dim italic](%s)[/dim italic]' % (
                 timestamp.strftime('%b %d, %Y %I:%M %p %Z'),
                 timestamp_utc.isoformat()
             ))
@@ -34,25 +37,21 @@ class Formatter(object):
                 record.id for record in records[1:]
             ])
 
-        return title, ids
+        return plain_title, ids
 
     @classmethod
     def show(cls, show, timezone=None):
-        title = '"%s" (%r)' % (
-            show.title,
-            show.year
-        )
+        plain_title = '"%s" (%r)' % (show.title, show.year)
+        console.print('[bold]"%s"[/bold] [dim](%r)[/dim]' % (show.title, show.year))
 
-        print('%s' % title)
-
-        return title, Formatter.episodes(show, timezone=timezone)
+        return plain_title, Formatter.episodes(show, timezone=timezone)
 
     @classmethod
     def episodes(cls, show, timezone=None):
         ids = []
 
         for x, episode in enumerate(six.itervalues(show.children)):
-            print('\tS%02dE%02d - %d plays -> %d plays' % (
+            console.print('  [cyan]S%02dE%02d[/cyan] — [cyan]%d[/cyan] plays → [green]%d[/green] plays' % (
                 episode.season,
                 episode.number,
                 len(episode.records),
@@ -65,7 +64,7 @@ class Formatter(object):
                 else:
                     timestamp = timestamp_utc
 
-                print('\t\t%s (%s)' % (
+                console.print('    [dim]%s[/dim] [dim italic](%s)[/dim italic]' % (
                     timestamp.strftime('%b %d, %Y %I:%M %p %Z'),
                     timestamp_utc.isoformat()
                 ))
@@ -75,6 +74,6 @@ class Formatter(object):
                 ])
 
             if x < len(show.children) - 1:
-                print()
+                console.print('')
 
         return ids

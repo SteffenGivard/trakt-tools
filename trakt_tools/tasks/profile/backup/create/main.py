@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
 from trakt_tools.models import Backup, Profile
 from trakt_tools.tasks.base import Task
@@ -44,7 +45,7 @@ class CreateBackupTask(Task):
         log.debug('process()')
 
         if not profile:
-            print('Requesting profile...')
+            console.print('[dim]Requesting profile...[/dim]')
             profile = Profile.fetch(
                 self.per_page,
                 self.rate_limit
@@ -53,13 +54,13 @@ class CreateBackupTask(Task):
         if not profile:
             raise Exception('Unable to fetch profile')
 
-        print('Logged in as %r' % profile.username)
-        print()
+        console.print('Logged in as [bold green]%s[/bold green]' % profile.username)
+        console.print('')
 
         if not self.assume_yes and not boolean_input('Would you like to continue?', default=True):
             exit(0)
 
-        print()
+        console.print('')
 
         # Create backup
         return self.create_backup(profile)
@@ -72,13 +73,13 @@ class CreateBackupTask(Task):
             h = handler()
 
             if not h.run(backup, profile):
-                print('Unable to backup profile, handler %r failed' % h)
+                console.print('[red]Unable to backup profile, handler %r failed[/red]' % h)
                 return False
 
-            print()
+            console.print('')
 
         # Compress backup
-        print('Compressing backup...')
+        console.print('[dim]Compressing backup...[/dim]')
 
         dest_path = os.path.join(
             self.backup_dir,
@@ -96,8 +97,8 @@ class CreateBackupTask(Task):
                     archive.write(path, os.path.relpath(path, backup.path))
 
         # Delete backup directory
-        print('Cleaning up...')
+        console.print('[dim]Cleaning up...[/dim]')
         shutil.rmtree(backup.path)
 
-        print('Backup has been saved to: "%s"' % dest_path)
+        console.print('[bold green]Backup saved to:[/bold green] "%s"' % dest_path)
         return True

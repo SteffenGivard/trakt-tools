@@ -1,5 +1,9 @@
 from __future__ import print_function
 
+from trakt_tools.core.console import console
+
+from rich.progress import Progress, BarColumn, TaskProgressColumn, TimeRemainingColumn, TextColumn
+
 import logging
 
 log = logging.getLogger(__name__)
@@ -7,21 +11,27 @@ log = logging.getLogger(__name__)
 
 class HistoryHandler(object):
     def run(self, backup, profile):
-        print('History')
+        console.print('[bold]History[/bold]')
 
         items = []
 
-        for i, count, page in profile.get_pages('/sync/history'):
-            # Append `page` items to list
-            items.extend(page)
+        with Progress(
+            TextColumn('[progress.description]{task.description}'),
+            BarColumn(),
+            TaskProgressColumn(),
+            TimeRemainingColumn(),
+            console=console,
+        ) as progress:
+            task = None
 
-            print(' - Received %d item(s) (page %d of %d)' % (
-                len(page),
-                i, count
-            ))
+            for i, count, page in profile.get_pages('/sync/history'):
+                if task is None:
+                    task = progress.add_task('  Fetching...', total=count)
 
-        # Write watched history to disk
-        print(' - Writing to "history.json"...')
+                items.extend(page)
+                progress.update(task, completed=i)
+
+        console.print('  [dim]Writing to "history.json"...[/dim]')
 
         try:
             return backup.write('history.json', items)

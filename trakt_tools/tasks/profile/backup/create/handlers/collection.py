@@ -1,6 +1,8 @@
 # flake8: noqa: W504
 from __future__ import print_function
 
+from trakt_tools.core.console import console
+
 import logging
 import os
 
@@ -9,7 +11,7 @@ log = logging.getLogger(__name__)
 
 class CollectionHandler(object):
     def run(self, backup, profile):
-        print('Collection')
+        console.print('[bold]Collection[/bold]')
 
         return (
             self.run_media(backup, profile, 'movies') and
@@ -21,18 +23,18 @@ class CollectionHandler(object):
         response = profile.get('/sync/collection/%s?extended=metadata' % media)
 
         if response.status_code != 200:
-            print('Invalid response returned')
+            console.print('  [red]Invalid response returned[/red]')
             return False
 
         # Retrieve items
         items = response.json()
 
         if media == 'movies':
-            print(' - Received %d movie(s)' % len(items))
+            console.print('  Received [cyan]%d[/cyan] movie(s)' % len(items))
         elif media == 'shows':
-            print(' - Received %d show(s)' % len(items))
+            console.print('  Received [cyan]%d[/cyan] show(s)' % len(items))
         else:
-            print(' - Received %d item(s)' % len(items))
+            console.print('  Received [cyan]%d[/cyan] item(s)' % len(items))
 
         # Ensure collection directory exists
         collection_dir = os.path.join(backup.path, 'collection')
@@ -43,7 +45,7 @@ class CollectionHandler(object):
         # Write collected items to disk
         dest_path = os.path.join('collection', '%s.json' % media)
 
-        print(' - Writing to "%s"...' % dest_path)
+        console.print('  [dim]Writing to "%s"...[/dim]' % dest_path)
 
         try:
             return backup.write(dest_path, items)

@@ -12,10 +12,19 @@ def _format_delta(seconds):
     if minutes < 60:
         return '%dm' % minutes
     hours = minutes // 60
-    remaining = minutes % 60
-    if remaining:
-        return '%dh %dm' % (hours, remaining)
-    return '%dh' % hours
+    if hours < 24:
+        return '%dh' % hours
+    days = hours // 24
+    if days < 7:
+        return '%dd' % days
+    weeks = days // 7
+    if weeks < 5:
+        return '%dw' % weeks
+    months = days // 30
+    if months < 12:
+        return '%dmo' % months
+    years = days // 365
+    return '%dy' % years
 
 
 def _format_timestamp(timestamp_utc, timezone):

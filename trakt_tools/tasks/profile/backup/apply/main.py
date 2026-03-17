@@ -1,5 +1,4 @@
 from trakt_tools.core.console import console
-from trakt_tools.core.input import boolean_input
 from trakt_tools.models import Profile
 from trakt_tools.tasks.base import Task
 from .handlers import CollectionHandler, HistoryHandler, RatingsHandler, WatchlistHandler
@@ -44,14 +43,6 @@ class CreateApplyTask(Task):
 
         if not profile:
             raise Exception('Unable to fetch profile')
-
-        console.print('Logged in as [bold green]%s[/bold green]' % profile.username)
-        console.print('')
-
-        if not boolean_input('Would you like to continue?', default=True):
-            exit(0)
-
-        console.print('')
 
         # Apply backup
         return self.apply_backup()

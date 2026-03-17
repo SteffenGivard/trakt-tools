@@ -1,6 +1,5 @@
 
 from trakt_tools.core.console import console
-from trakt_tools.core.input import boolean_input
 from trakt_tools.models import Profile
 from trakt_tools.tasks.base import Task
 from ..core.formatter import Formatter

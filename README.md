@@ -13,7 +13,7 @@ Command-line tools for Trakt.tv.
 > If you are concerned about data-loss, I would suggest reviewing the created backups yourself — they are simple JSON files that can be opened in any text editor. Backup files are structured exactly how they are returned from the Trakt.tv API.
 
 > [!NOTE]
-> Only history from a backup can be applied to your profile currently. Support for applying collection, playback, ratings, and watchlist data from a backup has not been implemented yet.
+> Playback progress cannot be restored from a backup — the Trakt API does not provide an endpoint for importing playback progress.
 
 ## Install
 

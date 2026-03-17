@@ -2,7 +2,7 @@ from trakt_tools.core.console import console
 from trakt_tools.core.input import boolean_input
 from trakt_tools.models import Profile
 from trakt_tools.tasks.base import Task
-from .handlers import HistoryHandler
+from .handlers import CollectionHandler, HistoryHandler, RatingsHandler, WatchlistHandler
 
 from trakt import Trakt
 
@@ -12,13 +12,11 @@ log = logging.getLogger(__name__)
 
 
 class CreateApplyTask(Task):
-    # TODO: implement other handlers
     handlers = [
-        # CollectionHandler,
+        CollectionHandler,
         HistoryHandler,
-        # PlaybackHandler,
-        # RatingsHandler,
-        # WatchlistHandler
+        RatingsHandler,
+        WatchlistHandler,
     ]
 
     def __init__(self, backup_zip, per_page=1000, debug=False, rate_limit=20):

@@ -73,7 +73,7 @@ class Formatter(object):
     def episodes(cls, show, timezone=None):
         ids = []
 
-        for x, episode in enumerate(show.children).values():
+        for x, episode in enumerate(show.children.values()):
             console.print('  [cyan]S%02dE%02d[/cyan]  [cyan]%d[/cyan] plays → [green]%d[/green] plays' % (
                 episode.season,
                 episode.number,

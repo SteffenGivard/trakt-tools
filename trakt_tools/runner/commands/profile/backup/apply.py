@@ -6,7 +6,7 @@ import click
 import os
 
 
-@click.command('profile:backup:apply', short_help="Apply backup to a Trakt.tv profile (history)")
+@click.command('profile:backup:apply', short_help="Apply backup to a Trakt.tv profile")
 @click.argument('backup_zip', type=click.Path(exists=True))
 @click.option(
     '--token',
@@ -16,13 +16,13 @@ import os
 def profile_backup_apply(backup_zip, token):
     """Apply backup to a Trakt.tv profile.
 
-    Only history can be applied to your profile currently. Support for applying collection, playback, ratings, and
-    watchlist data has not been implemented yet.
+    Restores collection, history, ratings, and watchlist from a backup zip.
+    Playback progress cannot be restored (no Trakt API endpoint exists for this).
 
-    Note: History already on your profile will be duplicated, `history:duplicates:merge` can be run afterwards to merge
-    any duplicates in your history.
+    Note: history already on your profile will be duplicated after applying; run
+    `history:duplicates:merge` afterwards to clean up any duplicates.
 
-    BACKUP_ZIP is the location of the zip file created by the profile:history:backup command
+    BACKUP_ZIP is the location of the zip file created by the profile:backup:create command
     """
 
     if not token:

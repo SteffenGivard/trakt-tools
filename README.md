@@ -9,12 +9,6 @@ Command-line tools for Trakt.tv.
 > [!WARNING]
 > I've done my best to ensure there aren't any critical bugs in this application, but please ensure your Trakt.tv profile has been backed up before running any operations.
 
-> [!TIP]
-> If you are concerned about data-loss, I would suggest reviewing the created backups yourself — they are simple JSON files that can be opened in any text editor. Backup files are structured exactly how they are returned from the Trakt.tv API.
-
-> [!NOTE]
-> Playback progress cannot be restored from a backup — the Trakt API does not provide an endpoint for importing playback progress.
-
 ## Install
 
 ```

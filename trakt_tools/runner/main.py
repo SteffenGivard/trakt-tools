@@ -39,9 +39,7 @@ def get_prog():
         if os.path.basename(sys.argv[0]) in ('__main__.py', '-c'):
             return '%s -m trakt_tools' % sys.executable
 
-        if os.path.basename(sys.argv[0]) == 'run.py':
-            return 'run.py'
-    except (AttributeError, TypeError, IndexError):
+except (AttributeError, TypeError, IndexError):
         pass
 
     return 'trakt_tools'

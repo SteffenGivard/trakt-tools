@@ -11,7 +11,7 @@ import os
 @click.option(
     '--token',
     default=os.environ.get('TRAKT_TOKEN') or None,
-    help='Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)'
+    help='Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)'
 )
 def profile_backup_apply(backup_zip, token):
     """Apply backup to a Trakt.tv profile.

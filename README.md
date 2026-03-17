@@ -50,7 +50,7 @@ Usage: trakt_tools history:duplicates:merge [OPTIONS]
   Merge duplicate history records
 
 Options:
-  --token TEXT            Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)
+  --token TEXT            Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)
   --backup-dir TEXT       Directory that backups should be stored in. (default: "./backups")
   --delta-max TEXT        Maximum delta between history records to consider as duplicate. (default: 10m)
   --per-page INTEGER      Request page size. (default: 1000)
@@ -67,7 +67,7 @@ Usage: trakt_tools history:duplicates:scan [OPTIONS]
   Scan for duplicate history records
 
 Options:
-  --token TEXT         Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)
+  --token TEXT         Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)
   --delta-max TEXT     Maximum delta between history records to consider as duplicate. (default: 10m)
   --per-page INTEGER   Request page size. (default: 1000)
   --help               Show this message and exit.
@@ -89,7 +89,7 @@ Usage: trakt_tools profile:backup:apply [OPTIONS] BACKUP_ZIP
   BACKUP_ZIP is the location of the zip file created by the profile:backup:create command
 
 Options:
-  --token TEXT  Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)
+  --token TEXT  Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)
   --help        Show this message and exit.
 ```
 
@@ -101,7 +101,7 @@ Usage: trakt_tools profile:backup:create [OPTIONS]
   Create backup of a Trakt.tv profile.
 
 Options:
-  --token TEXT        Trakt.tv authentication token. (default: "TRAKT_TOKEN" or Prompt)
+  --token TEXT        Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)
   --backup-dir TEXT   Directory that backups should be stored in. (default: "./backups")
   --per-page INTEGER  Request page size. (default: 1000)
   --help              Show this message and exit.

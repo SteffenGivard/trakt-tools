@@ -1,5 +1,4 @@
 from trakt_tools.core.authentication import add_account
-from trakt_tools.core.console import console
 
 import click
 

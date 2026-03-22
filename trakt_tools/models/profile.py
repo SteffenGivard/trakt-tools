@@ -200,10 +200,9 @@ class Profile(object):
         if received_count != item_count:
             log.warning("Item count mismatch: expected %d item(s), received %d item(s). "
                         "This may be a Trakt API inconsistency.", item_count, received_count)
-            console.print('[yellow]Warning: expected %d item(s) but received %d — Trakt API count mismatch, continuing anyway.[/yellow]' % (
-                item_count,
-                received_count
-            ))
+            console.print('[yellow]Warning: expected %d item(s) but received %d — '
+                          'Trakt API count mismatch, continuing anyway.[/yellow]' % (
+                              item_count, received_count))
 
     def __repr__(self):
         return '<Profile %r>' % self.username

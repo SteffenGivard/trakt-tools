@@ -109,7 +109,8 @@ def authenticate():
         console.print('')
         console.print('[bold]To use trakt-tools, you need a Trakt API application.[/bold]')
         console.print('')
-        console.print('  1. Go to [link=https://trakt.tv/oauth/applications/new]https://trakt.tv/oauth/applications/new[/link]')
+        console.print('  1. Go to [link=https://trakt.tv/oauth/applications/new]'
+                      'https://trakt.tv/oauth/applications/new[/link]')
         console.print('  2. Give your application a name (e.g. [italic]trakt-tools[/italic])')
         console.print('  3. Set the redirect URI to [bold]urn:ietf:wg:oauth:2.0:oob[/bold]')
         console.print('  4. Save the application and copy the Client ID and Client Secret')
@@ -132,12 +133,14 @@ def authenticate():
     result = Trakt['oauth/device'].code()
 
     if not result:
-        console.print('[red]ERROR: Unable to request a device code. Check that your Client ID and Client Secret are correct.[/red]')
+        console.print('[red]ERROR: Unable to request a device code. '
+                      'Check that your Client ID and Client Secret are correct.[/red]')
         console.print('[dim]To reset saved credentials, delete: %s[/dim]' % CONFIG_PATH)
         return False, None
 
     console.print('')
-    console.print('  Navigate to: [bold cyan]%s[/bold cyan]' % result.get('verification_url', 'https://trakt.tv/activate'))
+    url = result.get('verification_url', 'https://trakt.tv/activate')
+    console.print('  Navigate to: [bold cyan]%s[/bold cyan]' % url)
     console.print('  Enter code:  [bold cyan]%s[/bold cyan]' % result['user_code'])
     console.print('')
     input('Press ENTER once you have authorized the application...')

@@ -28,6 +28,10 @@ def cli(ctx, debug, rate_limit):
 
 
 # Add commands
+cli.add_command(commands.account_list)
+cli.add_command(commands.account_add)
+cli.add_command(commands.account_switch)
+cli.add_command(commands.account_delete)
 cli.add_command(commands.profile_backup_apply)
 cli.add_command(commands.profile_backup_create)
 cli.add_command(commands.history_duplicates_merge)

@@ -9,6 +9,11 @@ import os
 
 @click.command('profile:backup:create')
 @click.option(
+    '--account',
+    default=None,
+    help='Account name to back up. (default: active account)'
+)
+@click.option(
     '--token',
     default=os.environ.get('TRAKT_TOKEN') or None,
     help='Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)'
@@ -24,16 +29,15 @@ import os
     help='Request page size. (default: 1000)'
 )
 @click.pass_context
-def profile_backup_create(ctx, token, backup_dir, per_page):
+def profile_backup_create(ctx, account, token, backup_dir, per_page):
     """Create backup of a Trakt.tv profile."""
 
     if not token:
-        success, token = authenticate()
+        success, token = authenticate(account)
 
         if not success:
             console.print('[red]Authentication failed[/red]')
             exit(1)
-
 
     # Set default backup directory
     if not backup_dir:

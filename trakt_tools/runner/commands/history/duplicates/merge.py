@@ -15,6 +15,11 @@ import os
     help='Automatic yes to confirmation prompts.'
 )
 @click.option(
+    '--account',
+    default=None,
+    help='Account name to use. (default: active account)'
+)
+@click.option(
     '--token',
     default=os.environ.get('TRAKT_TOKEN') or None,
     help='Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)'
@@ -45,11 +50,11 @@ import os
     help='Review each action before applying them. (default: prompt)'
 )
 @click.pass_context
-def history_duplicates_merge(ctx, assume_yes, token, backup_dir, delta_max, per_page, backup, review):
+def history_duplicates_merge(ctx, assume_yes, account, token, backup_dir, delta_max, per_page, backup, review):
     """Merge duplicate history records"""
 
     if not token:
-        success, token = authenticate()
+        success, token = authenticate(account)
 
         if not success:
             console.print('[red]Authentication failed[/red]')

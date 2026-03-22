@@ -9,11 +9,16 @@ import os
 @click.command('profile:backup:apply', short_help="Apply backup to a Trakt.tv profile")
 @click.argument('backup_zip', type=click.Path(exists=True))
 @click.option(
+    '--account',
+    default=None,
+    help='Account name to apply the backup to. (default: active account)'
+)
+@click.option(
     '--token',
     default=os.environ.get('TRAKT_TOKEN') or None,
     help='Trakt.tv authentication token. (default: "TRAKT_TOKEN" env var, or saved config)'
 )
-def profile_backup_apply(backup_zip, token):
+def profile_backup_apply(backup_zip, account, token):
     """Apply backup to a Trakt.tv profile.
 
     Restores collection, history, ratings, and watchlist from a backup zip.
@@ -26,7 +31,7 @@ def profile_backup_apply(backup_zip, token):
     """
 
     if not token:
-        success, token = authenticate()
+        success, token = authenticate(account)
 
         if not success:
             console.print('[red]Authentication failed[/red]')

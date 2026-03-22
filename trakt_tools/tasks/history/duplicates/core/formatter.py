@@ -3,7 +3,6 @@ from trakt_tools.core.console import console
 from trakt_tools.core.helpers import total_seconds
 
 
-
 def _format_delta(seconds):
     seconds = int(abs(seconds))
     if seconds < 60:

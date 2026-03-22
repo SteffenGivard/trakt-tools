@@ -40,9 +40,9 @@ class RatingsHandler(object):
                 console.print('[yellow]Skipping unknown type "{}": {}[/yellow]'.format(item_type, item))
 
         buckets = [
-            ('movies',   movies),
-            ('shows',    shows),
-            ('seasons',  seasons),
+            ('movies', movies),
+            ('shows', shows),
+            ('seasons', seasons),
             ('episodes', episodes),
         ]
 

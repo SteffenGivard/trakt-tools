@@ -34,7 +34,6 @@ def profile_backup_create(ctx, token, backup_dir, per_page):
             console.print('[red]Authentication failed[/red]')
             exit(1)
 
-
     # Set default backup directory
     if not backup_dir:
         backup_dir = os.path.join(os.curdir, 'backups')

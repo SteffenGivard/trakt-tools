@@ -32,7 +32,6 @@ def profile_backup_apply(backup_zip, token):
             console.print('[red]Authentication failed[/red]')
             exit(1)
 
-
     # Run task
     success = CreateApplyTask(backup_zip).run(token=token)
 
